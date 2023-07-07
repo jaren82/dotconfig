@@ -82,6 +82,9 @@ lvim.builtin.telescope.on_config_done = function(telescope)
   telescope.load_extension("advanced_git_search")
 end
 
+lvim.lsp.buffer_mappings.normal_mode["gd"] = { "<cmd>Telescope lsp_definitions<cr>", "Go to Definiton" }
+lvim.lsp.buffer_mappings.normal_mode["gr"] = { "<cmd>Telescope lsp_references<cr>", "Go to References" }
+
 lvim.builtin.which_key.mappings["g"]["d"] = { "<cmd>Telescope advanced_git_search diff_commit_file<CR>",
   "Diff Commit File" }
 lvim.builtin.which_key.vmappings["gd"] = {
