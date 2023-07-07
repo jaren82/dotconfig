@@ -67,6 +67,9 @@ Plugin 'wincent/command-t'
 
 Plugin 'unicornrainbow/vim-image_paste'
 
+" Plugin 'itchyny/calendar.vim'
+Plugin 'mattn/calendar-vim'
+
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -98,4 +101,16 @@ let g:CommandTMaxHeight = 30
 set rubydll=/Users/hansoonmo/.rbenv/versions/3.2.2/lib/libruby.dylib
 
 source $HOME/.config/mvim/vimwiki.vim
+
+
+" Calendar itchyny/calendar.vim
+" TODO vimwiki 랑 연동 시키기
+" https://github.com/itchyny/calendar.vim/issues/49
+"
+" let g:calendar_google_calendar = 1
+" let g:calendar_google_task = 1
+
+" let g:calendar_google_api_key = '...'
+" let g:calendar_google_client_id = '....apps.googleusercontent.com'
+" let g:calendar_google_client_secret = '...'
 
