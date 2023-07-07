@@ -297,4 +297,4 @@ shell:
   args:
     - --login
     - -c
-    - "tmux attach -t '\ue7c5 ╣[-_-]╠  ' || tmux new -s '\ue7c5 ╣[-_-]╠  '"
+    - "tmux -f ~/.config/.tmux.conf attach -t '\ue7c5 ╣[-_-]╠  ' || tmux new -s '\ue7c5 ╣[-_-]╠  '"
