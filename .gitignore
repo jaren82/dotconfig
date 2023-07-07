@@ -1,0 +1,16 @@
+
+# all ignore
+*
+
+# add config
+!alacritty/
+!alacritty/*
+!mvim/
+!mvim/*
+!lvim/
+!lvim/config.lua
+!.tmux.conf
+!README.md
+
+!.gitignore
+
