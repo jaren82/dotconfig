@@ -28,6 +28,8 @@ nnoremap <Leader>bn :bnext<CR>
 nnoremap <Leader>bb :bprevious<CR>
 nnoremap <Leader>b :<C-u>execute 'b' . v:count1<CR>
 
+nnoremap <Leader>t :CommandT %:h<CR>
+
 " vimrc 변경되면 즉시 리로딩
 au! BufWritePost .vimrc so %
 au! BufWritePost gvimrc so %
