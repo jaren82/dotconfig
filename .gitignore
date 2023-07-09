@@ -11,6 +11,8 @@
 !lvim/config.lua
 !.tmux.conf
 !README.md
+!hammerspoon/
+!hammerspoon/*
 
 !.gitignore
 
