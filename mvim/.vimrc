@@ -12,6 +12,7 @@ set shiftwidth=2
 
 " 색상 변경
 set background=light
+autocmd GUIEnter *  colorscheme polar
 
 set laststatus=2
 

@@ -123,12 +123,12 @@ lvim.builtin.gitsigns.opts.watch_gitdir = { interval = 100 }
 -- -- generic LSP settings <https://www.lunarvim.org/docs/languages#lsp-support>
 --- disable automatic installation of servers
 lvim.lsp.installer.setup.automatic_servers_installation = true
-lvim.lsp.installer.setup.automatic_installation = true
-local graphql_lsp_opts = {
-  filetypes = { "graphql" },
-}
+-- lvim.lsp.installer.setup.automatic_installation = true
+-- local graphql_lsp_opts = {
+--   filetypes = { "graphql" },
+-- }
 
-require("lvim.lsp.manager").setup("graphql", graphql_lsp_opts)
+-- require("lvim.lsp.manager").setup("graphql", graphql_lsp_opts)
 require("lvim.lsp.manager").setup("tailwindcss", {
   on_attach = function(client, bufnr)
     require("tailwindcss-colors").buf_attach(bufnr)
