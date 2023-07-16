@@ -50,7 +50,8 @@ function reloadConfig(files)
         hs.reload()
     end
 end
-myWatcher = hs.pathwatcher.new(os.getenv("HOME") .. "/.hammerspoon/", reloadConfig):start()
+
+myWatcher = hs.pathwatcher.new(os.getenv("HOME") .. "/.config/hammerspoon/", reloadConfig):start()
 hs.alert.show("Config loaded")
 
 ------------------------------------------------------------------------------------
@@ -118,19 +119,23 @@ hs.hotkey.bind({"ctrl", "shift"}, "L",
   stroke_shift_arrow('right')
 )
 
-hs.hotkey.bind({'ctrl', 'cmd'}, '1', function()
-    hs.application.launchOrFocus('Google Chrome')
+hs.hotkey.bind({ 'ctrl', 'cmd' }, '1', function()
+  hs.application.launchOrFocus('Google Chrome')
 end)
 
-hs.hotkey.bind({'ctrl', 'cmd'}, '2', function()
-    hs.application.launchOrFocus('iTerm')
-    -- hs.application.launchOrFocus('WebStorm')
+hs.hotkey.bind({ 'ctrl', 'cmd' }, '2', function()
+  hs.application.launchOrFocus('Alacritty')
+  -- hs.application.launchOrFocus('WebStorm')
 end)
 
-hs.hotkey.bind({'ctrl', 'cmd'}, '3', function()
-    hs.application.launchOrFocus('Slack')
+hs.hotkey.bind({ 'ctrl', 'cmd' }, '3', function()
+  hs.application.launchOrFocus('MacVim')
 end)
 
-hs.hotkey.bind({'ctrl', 'cmd'}, '4', function()
-    hs.application.launchOrFocus('DataGrip')
+hs.hotkey.bind({ 'ctrl', 'cmd' }, '4', function()
+  hs.application.launchOrFocus('Slack')
+end)
+
+hs.hotkey.bind({ 'ctrl', 'cmd' }, '5', function()
+  hs.application.launchOrFocus('DataGrip')
 end)
