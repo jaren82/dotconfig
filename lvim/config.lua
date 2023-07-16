@@ -140,10 +140,6 @@ lvim.lsp.on_attach_callback = function(client, _)
 end
 
 
-lvim.lsp.on_attach_callback = function(client, _)
-  client.server_capabilities.semanticTokensProvider = nil
-end
-
 -- linters and formatters <https://www.lunarvim.org/docs/languages#lintingformatting>
 local formatters = require "lvim.lsp.null-ls.formatters"
 formatters.setup {
@@ -306,4 +302,12 @@ lvim.plugins = {
     end
   },
 
+
+  {
+    'tricktux/pomodoro.vim',
+    config = function()
+      vim.cmd(
+        'let g:pomodoro_notification_cmd = \"say \\"뽀모도로 세션이 끝났습니다\\" \"')
+    end
+  }
 }
