@@ -117,3 +117,10 @@ source $HOME/.config/mvim/vimwiki.vim
 " let g:calendar_google_client_id = '....apps.googleusercontent.com'
 " let g:calendar_google_client_secret = '...'
 
+iabbr em jaren82@gmail.com
+iabbr <expr> ct strftime("(✅ %Y-%m-%d %H:%M)")
+iabbr <expr> __file expand('%:p')
+iabbr <expr> __name expand('%')
+iabbr <expr> __pwd expand('%:p:h')
+iabbr <expr> __branch system("git rev-parse --abbrev-ref HEAD")
+

@@ -138,6 +138,8 @@ function! LastModified()
     endif
 endfunction
 
+let g:loaded_images_paste='~/Documents/vimwiki/images'
+
 augroup vimwikiauto
     autocmd FileType *wiki/*.md let g:loaded_images_paste='~/Documents/vimwiki/images'
     autocmd BufWritePre *wiki/*.md call LastModified()
