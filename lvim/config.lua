@@ -9,6 +9,7 @@ vim.g.copilot_no_tab_map = true
 vim.g.copilot_assume_mapped = true
 vim.g.copilot_tab_fallback = ""
 
+-- vim.g.python3_host_prog = '~/.pyenv/versions/neovim3/bin/python'
 vim.fn.setenv("FIG_TERM", nil)
 
 vim.api.nvim_create_user_command(
@@ -49,7 +50,6 @@ lvim.leader = "space"
 lvim.keys.normal_mode["<C-s>"] = ":w!<cr>"
 lvim.keys.insert_mode["<C-s>"] = "<Esc>:w!<cr>"
 lvim.keys.normal_mode["<M-cr>"] = ":TypescriptAddMissingImports<cr>"
-lvim.keys.insert_mode["<M-cr>"] = ":TypescriptAddMissingImports<cr>"
 -- Press jk fast to enter
 lvim.keys.insert_mode['jk'] = '<Esc>'
 lvim.keys.normal_mode['<C-n>'] = ':NvimTreeFocus<CR>'
@@ -60,6 +60,11 @@ lvim.keys.normal_mode["<C-e>"] = "<Plug>(easymotion-bd-f)"
 lvim.keys.insert_mode["<C-a>"] = { "copilot#Accept('<CR>')",
   { script = true, silent = true, expr = true, replace_keycodes = false } }
 lvim.keys.normal_mode["<leader>rn"] = ":lua vim.lsp.buf.rename()<CR>"
+-- nmap <silent> gd <Plug>(coc-definition)
+-- nmap <silent> gy <Plug>(coc-type-definition)
+-- nmap <silent> gi <Plug>(coc-implementation)
+-- nmap <silent> gr <Plug>(coc-references)
+lvim.keys.normal_mode["<leader>cgd"] = "<Plug>(coc-definition)"
 
 -- Use which-key to add extra bindings with the leader-key prefix
 lvim.builtin.which_key.mappings["t"] = {
@@ -148,9 +153,23 @@ formatters.setup {
     -- extra_args = { "--print-width", "100" },
     filetypes = { "typescript", "typescriptreact" },
   },
+  {
+    command = "ktlint",
+    args = {
+      "--relative",
+      "--reporter=json",
+      "--format",
+      "--stdin",
+      "**/*.kt",
+      "**/*.kts",
+    },
+    filetypes = { "kotlin" }
+  }
 }
+
 local linters = require "lvim.lsp.null-ls.linters"
 linters.setup {}
+
 -- -- Additional Plugins <https://www.lunarvim.org/docs/plugins#user-plugins>
 lvim.plugins = {
   {
@@ -162,9 +181,7 @@ lvim.plugins = {
   --     require("auto-save").setup()
   --   end,
   -- },
-  {
-    "easymotion/vim-easymotion",
-  },
+  --
   {
     "tpope/vim-surround",
   },
@@ -178,7 +195,9 @@ lvim.plugins = {
     "folke/trouble.nvim",
     cmd = "TroubleToggle"
   },
+
   { "arthurxavierx/vim-caser" },
+
   {
     "jose-elias-alvarez/typescript.nvim",
     config = function()
@@ -302,12 +321,38 @@ lvim.plugins = {
     end
   },
 
-
   {
     'tricktux/pomodoro.vim',
     config = function()
       vim.cmd(
         'let g:pomodoro_notification_cmd = \"say \\"뽀모도로 세션이 끝났습니다\\" \"')
     end
-  }
+  },
+
+  -- kotlin 개발환경 설정
+  {
+    'beeender/Comrade',
+    dependencies = {
+      {
+        'neoclide/coc.nvim',
+        build = ':call coc#util#install()'
+      },
+
+      {
+        'Shougo/deoplete.nvim',
+        dependencies = {
+          "ibhagwan/fzf-lua",
+          -- to show diff splits and open commits in browser
+          "roxma/nvim-yarp",
+          -- to open commits in browser with fugitive
+          "roxma/vim-hug-neovim-rpc",
+          -- OPTIONAL: to replace the diff from fugitive with diffview.nvim
+          -- (fugitive is still needed to open in browser)
+          -- "sindrets/diffview.nvim",
+        },
+      },
+    }
+  },
+
+
 }
