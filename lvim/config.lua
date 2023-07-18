@@ -170,6 +170,16 @@ formatters.setup {
 local linters = require "lvim.lsp.null-ls.linters"
 linters.setup {}
 
+-- lvim.builtin.lualine.on_config_done = function(lualine)
+--   local config = lualine.get_config()
+--   table.insert(config.sections.lualine_c, require('pomodoro').statusline)
+--   lualine.setup(config)
+-- end
+-- lvim.builtin.lualine.options.component_separators = { left = "", right = "" }
+-- table.insert(lvim.builtin.lualine.sections.lualine_c, { "pomo#status_bar()" })
+-- lvim.builtin.lualine.sections.lualine_c = { left = "", right = "" }
+-- lvim.builtin.lualine.inactive_sections.lualine_c = { left = "", right = "" }
+
 -- -- Additional Plugins <https://www.lunarvim.org/docs/plugins#user-plugins>
 lvim.plugins = {
   {
@@ -322,10 +332,20 @@ lvim.plugins = {
   },
 
   {
-    'tricktux/pomodoro.vim',
+    'wthollingsworth/pomodoro.nvim',
+    dependencies = { 'MunifTanjim/nui.nvim' },
     config = function()
-      vim.cmd(
-        'let g:pomodoro_notification_cmd = \"say \\"뽀모도로 세션이 끝났습니다\\" \"')
+      require('pomodoro').setup({
+        time_work = 25,
+        time_break_short = 5,
+        time_break_long = 20,
+        timers_to_long_break = 4
+      })
+
+      local components = require "lvim.core.lualine.components"
+      -- lunarvim default 에 추가
+      lvim.builtin.lualine.sections.lualine_c = { components.diff, components.python_env, require('pomodoro').statusline }
+      lvim.builtin.lualine.inactive_sections.lualine_c = { 'filename', require('pomodoro').statusline }
     end
   },
 
