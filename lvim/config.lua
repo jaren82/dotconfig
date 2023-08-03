@@ -144,7 +144,7 @@ lvim.lsp.on_attach_callback = function(client, _)
   client.server_capabilities.semanticTokensProvider = nil
 end
 
-
+lvim.lsp.null_ls.setup.debug = true
 -- linters and formatters <https://www.lunarvim.org/docs/languages#lintingformatting>
 local formatters = require "lvim.lsp.null-ls.formatters"
 formatters.setup {
@@ -155,14 +155,6 @@ formatters.setup {
   },
   {
     command = "ktlint",
-    args = {
-      "--relative",
-      "--reporter=json",
-      "--format",
-      "--stdin",
-      "**/*.kt",
-      "**/*.kts",
-    },
     filetypes = { "kotlin" }
   }
 }
@@ -350,29 +342,39 @@ lvim.plugins = {
   },
 
   -- kotlin 개발환경 설정
-  {
-    'beeender/Comrade',
-    dependencies = {
-      {
-        'neoclide/coc.nvim',
-        build = ':call coc#util#install()'
-      },
+  -- {
+  --   'beeender/Comrade',
+  --   config = function()
+  --     local cmd =
+  --     "gsed -i 's#os.getenv(\"NVIM_LISTEN_ADDRESS\")#os.getenv(\"NVIM\")#' ~/.local/share/lunarvim/site/pack/lazy/opt/Comrade/plugin/init.py"
+  --     os.execute(cmd)
+  --   end,
+  --   dependencies = {
+  --     {
+  --       'neoclide/coc.nvim',
+  --       build = ':call coc#util#install()'
+  --     },
 
-      {
-        'Shougo/deoplete.nvim',
-        dependencies = {
-          "ibhagwan/fzf-lua",
-          -- to show diff splits and open commits in browser
-          "roxma/nvim-yarp",
-          -- to open commits in browser with fugitive
-          "roxma/vim-hug-neovim-rpc",
-          -- OPTIONAL: to replace the diff from fugitive with diffview.nvim
-          -- (fugitive is still needed to open in browser)
-          -- "sindrets/diffview.nvim",
-        },
-      },
-    }
-  },
+  --     {
+  --       'Shougo/deoplete.nvim',
+  --       build = ":UpdateRemotePlugins",
+  --       dependencies = {
+  --         "ibhagwan/fzf-lua",
+  --         -- to show diff splits and open commits in browser
+  --         "roxma/nvim-yarp",
+  --         -- to open commits in browser with fugitive
+  --         "roxma/vim-hug-neovim-rpc",
+  --         -- OPTIONAL: to replace the diff from fugitive with diffview.nvim
+  --         -- (fugitive is still needed to open in browser)
+  --         -- "sindrets/diffview.nvim",
+  --       },
+  --     },
+  --   }
+  -- },
+
+  {
+    'dhruvasagar/vim-table-mode'
+  }
 
 
 }
