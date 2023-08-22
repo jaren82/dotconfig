@@ -155,6 +155,12 @@ formatters.setup {
   },
   {
     command = "ktlint",
+    args = {
+      "--format",
+      "--stdin",
+      "**/*.kt",
+      "**/*.kts",
+    },
     filetypes = { "kotlin" }
   }
 }

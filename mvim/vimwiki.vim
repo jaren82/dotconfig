@@ -97,6 +97,8 @@ function! NewDiaryTemplate()
 
     let l:wiki_directory = v:false
 
+    let l:filename = expand('%:t:r')
+
     for wiki in g:vimwiki_list
         if expand('%:p:h') =~ expand(wiki.path)
             let l:wiki_directory = v:true
@@ -112,18 +114,16 @@ function! NewDiaryTemplate()
         return
     endif
 
-    let l:template_dt = strftime('%Y-%m-%d')
     let l:template = []
-    call add(l:template, '# ' . l:template_dt)
+    call add(l:template, '# ' . l:filename)
     call add(l:template, '')
-    call add(l:template, '# Todo ')
+    call add(l:template, '# 일기')
     call add(l:template, '')
-    call add(l:template, '# ')
     call setline(1, l:template)
     execute 'normal! G'
     execute 'normal! $'
 
-    echom 'new wiki diary page ' . l:template_dt . ' has created'
+    echom 'new wiki diary page ' . l:filename . ' has created'
 endfunction
 
 function! LastModified()
