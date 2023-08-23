@@ -8,3 +8,10 @@ mv ~/.hammerspoon ~/.config/hammerspoon
 defaults write org.hammerspoon.Hammerspoon MJConfigFile "~/.config/hammerspoon/init.lua"
 ```
 
+
+## Tmux
+```shell
+# plugin 설치
+take ~/.config/.tmux
+git clone https://github.com/tmux-plugins/tpm ~/.config/.tmux/plugins/tpm
+```
