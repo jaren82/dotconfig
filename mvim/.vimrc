@@ -10,6 +10,8 @@ set expandtab
 " >> 또는 << 키로 들여 쓰기 할때 스페이스의 갯수. 기본값 8
 set shiftwidth=2 
 
+set macmeta
+
 " 색상 변경
 set background=light
 autocmd GUIEnter *  colorscheme polar
@@ -31,13 +33,29 @@ nnoremap <Leader>b :<C-u>execute 'b' . v:count1<CR>
 
 nnoremap <Leader>t :CommandT %:h<CR>
 
+" keep indent visual block
+vnoremap < <gv
+vnoremap > >gv
+
 " vimrc 변경되면 즉시 리로딩
 au! BufWritePost .vimrc so %
 au! BufWritePost gvimrc so %
 
 " Edit vimr configuration file
 nnoremap <Leader>lc :e $MYVIMRC<CR>
+nnoremap <Leader>Lc :e $MYVIMRC<CR>
 nnoremap <Leader>c :bd!<CR>
+
+map <M-0> <:b 9999>
+map <M-1> :b 1<CR>
+map <M-2> :b 2<CR>
+map <M-3> :b 3<CR>
+map <M-4> :b 4<CR>
+map <M-5> :b 5<CR>
+map <M-6> :b 6<CR>
+map <M-7> :b 7<CR>
+map <M-8> :b 8<CR>
+map <M-9> :b 9<CR>
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -69,10 +87,14 @@ Plugin 'chrisbra/vim-commentary'
 
 Plugin 'wincent/command-t'
 
-Plugin 'unicornrainbow/vim-image_paste'
+" Plugin 'unicornrainbow/vim-image_paste'
+
+Plugin 'img-paste-devs/img-paste.vim'
 
 " Plugin 'itchyny/calendar.vim'
 Plugin 'mattn/calendar-vim'
+
+Plugin 'Kachyz/vim-gitmoji'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -120,6 +142,7 @@ source $HOME/.config/mvim/vimwiki.vim
 
 iabbr em jaren82@gmail.com
 iabbr <expr> ct strftime("(✅ %Y-%m-%d %H:%M)")
+iabbr <expr> dt strftime("%Y-%m-%d")
 iabbr <expr> __file expand('%:p')
 iabbr <expr> __name expand('%')
 iabbr <expr> __pwd expand('%:p:h')

@@ -47,7 +47,10 @@ let vim_markdown_preview_browser='Google Chrome'
 let vim_markdown_preview_github=1 
 let vim_markdown_preview_temp_file=1
 
-autocmd FileType markdown nmap <buffer><silent> <leader>p :call image_paste#PasteImage()<CR>
+autocmd FileType markdown nmap <buffer><silent> <leader>p :call mdip#MarkdownClipboardImage()<CR>
+" there are some defaults for image directory and image name, you can change them
+let g:mdip_imgdir = '\.\./images'
+let g:mdip_imgname = 'image'
 
 function! NewTemplate()
 
@@ -138,10 +141,7 @@ function! LastModified()
     endif
 endfunction
 
-let g:loaded_images_paste='~/Documents/vimwiki/images'
-
 augroup vimwikiauto
-    autocmd FileType *wiki/*.md let g:loaded_images_paste='~/Documents/vimwiki/images'
     autocmd BufWritePre *wiki/*.md call LastModified()
     autocmd BufRead,BufNewFile *diary/*.md call NewDiaryTemplate()
     autocmd BufRead,BufNewFile *wiki/*.md,!*diary/*.md call NewTemplate()
