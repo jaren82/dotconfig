@@ -139,3 +139,6 @@ end)
 hs.hotkey.bind({ 'ctrl', 'cmd' }, '5', function()
   hs.application.launchOrFocus('DataGrip')
 end)
+
+-- Window Management (fullscreen to other monitor)
+require('window_management')
