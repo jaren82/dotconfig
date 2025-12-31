@@ -64,7 +64,7 @@ call vundle#begin()
 "call vundle#begin('~/some/path/here')
 
 " let Vundle manage Vundle, required
-Plugin 'gmarik/Vundle.vim'
+Plugin 'VundleVim/Vundle.vim'
 
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
@@ -95,6 +95,8 @@ Plugin 'img-paste-devs/img-paste.vim'
 Plugin 'mattn/calendar-vim'
 
 Plugin 'Kachyz/vim-gitmoji'
+
+Plugin 'arthurxavierx/vim-caser'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required

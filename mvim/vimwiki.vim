@@ -8,6 +8,12 @@ let g:vimwiki_list = [
     \   'ext' : '.md',
     \},
     \{
+    \   'path': '~/Documents/vimwiki_101',
+    \ 'syntax': 'markdown', 
+    \   'ext' : '.md',
+    \ 'diary_frequency' : 'weekly',
+    \},
+    \{
     \   'path': '~/Documents/vimwiki_fitpet',
     \ 'syntax': 'markdown', 
     \   'ext' : '.md',

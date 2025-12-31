@@ -5,9 +5,11 @@ vim.opt.relativenumber = true
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 
-vim.g.copilot_no_tab_map = true
-vim.g.copilot_assume_mapped = true
-vim.g.copilot_tab_fallback = ""
+-- vim.g.copilot_no_tab_map = true
+-- vim.g.copilot_assume_mapped = true
+-- vim.g.copilot_tab_fallback = ""
+
+-- vim.g.NERDTreeChDirMode = 1  -- 이 설정이 nvim-tree에 영향을 줄 수 있어서 비활성화
 
 -- vim.g.python3_host_prog = '~/.pyenv/versions/neovim3/bin/python'
 vim.fn.setenv("FIG_TERM", nil)
@@ -27,11 +29,11 @@ vim.api.nvim_create_user_command(
 
 -- general
 lvim.log.level = "info"
-lvim.format_on_save = {
-  enabled = true,
-  -- pattern = "*.lua",
-  timeout = 1000,
-}
+-- lvim.format_on_save = {
+--   enabled = true,
+--   pattern = { "*.ts", "*.tsx", "*.js", "*.jsx" },
+--   timeout = 5000,
+-- }
 
 lvim.autocommands = {
   {
@@ -57,8 +59,8 @@ lvim.keys.normal_mode['<C-a>'] = ':w<CR>:%w !pbcopy<CR><CR>'
 -- lvim.keys.normal_mode["<C-e>j"] = "<Plug>(easymotion-j)"
 -- lvim.keys.normal_mode["<C-e>k"] = "<Plug>(easymotion-k)"
 lvim.keys.normal_mode["<C-e>"] = "<Plug>(easymotion-bd-f)"
-lvim.keys.insert_mode["<C-a>"] = { "copilot#Accept('<CR>')",
-  { script = true, silent = true, expr = true, replace_keycodes = false } }
+-- lvim.keys.insert_mode["<C-a>"] = { "copilot#Accept('<CR>')",
+--   { script = true, silent = true, expr = true, replace_keycodes = false } }
 lvim.keys.normal_mode["<leader>rn"] = ":lua vim.lsp.buf.rename()<CR>"
 -- nmap <silent> gd <Plug>(coc-definition)
 -- nmap <silent> gy <Plug>(coc-type-definition)
@@ -78,17 +80,68 @@ lvim.builtin.which_key.mappings["t"] = {
 }
 lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
 lvim.builtin.which_key.mappings["l"]["R"] = { "<cmd>LspRestart<CR>", "Lsp Restart" }
-
 -- Telescope
 lvim.builtin.telescope.defaults.layout_config.width = 0.95
 lvim.builtin.telescope.defaults.layout_config.height = 0.95
 lvim.builtin.telescope.defaults.layout_strategy = "horizontal"
+
+-- Telescope 검색 성능 최적화 (큰 프로젝트용)
+lvim.builtin.telescope.defaults.file_ignore_patterns = {
+  "node_modules",
+  "%.git/",
+  "dist/",
+  "build/",
+  "bin/",
+  "%.next/",
+  "%.cache/",
+  "coverage/",
+  "%.lock$",
+  "package%-lock%.json",
+  "yarn%.lock",
+}
+
+-- ripgrep 설정 (live_grep, grep_string 최적화)
+lvim.builtin.telescope.defaults.vimgrep_arguments = {
+  "rg",
+  "--color=never",
+  "--no-heading",
+  "--with-filename",
+  "--line-number",
+  "--column",
+  "--smart-case",
+  "--hidden",           -- 숨김 파일 검색
+  "--glob=!.git/",      -- .git 폴더 제외
+  "--glob=!node_modules/",
+  "--glob=!dist/",
+  "--glob=!build/",
+  "--glob=!bin/",
+}
+
+-- 파일 찾기 최적화 (fd 사용)
+lvim.builtin.telescope.pickers = {
+  find_files = {
+    hidden = true,
+    find_command = {
+      "fd",
+      "--type", "f",
+      "--hidden",
+      "--exclude", ".git",
+      "--exclude", "node_modules",
+      "--exclude", "dist",
+      "--exclude", "build",
+      "--exclude", "bin",
+    },
+  },
+}
+
 lvim.builtin.telescope.on_config_done = function(telescope)
   telescope.load_extension("advanced_git_search")
 end
 
-lvim.lsp.buffer_mappings.normal_mode["gd"] = { "<cmd>Telescope lsp_definitions<cr>", "Go to Definiton" }
+lvim.lsp.buffer_mappings.normal_mode["gd"] = { "<cmd>Telescope lsp_definitions<cr>", "Go to Definition" }
 lvim.lsp.buffer_mappings.normal_mode["gr"] = { "<cmd>Telescope lsp_references<cr>", "Go to References" }
+lvim.lsp.buffer_mappings.normal_mode["gi"] = { "<cmd>Telescope lsp_implementations<cr>", "Go to Implementation" }
+lvim.lsp.buffer_mappings.normal_mode["gt"] = { "<cmd>Telescope lsp_type_definitions<cr>", "Go to Type Definition" }
 
 lvim.builtin.which_key.mappings["g"]["d"] = { "<cmd>Telescope advanced_git_search diff_commit_file<CR>",
   "Diff Commit File" }
@@ -111,8 +164,47 @@ lvim.colorscheme = "lunar"
 lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
 lvim.builtin.terminal.active = true
+lvim.builtin.terminal.direction = "horizontal"
+lvim.builtin.terminal.open_mapping = [[<c-\>]]
+
+-- Terminal always opens at project root
+lvim.builtin.terminal.on_open = function(term)
+  -- Git 루트 찾기
+  local git_root = vim.fn.system('git rev-parse --show-toplevel 2>/dev/null')
+  git_root = vim.trim(git_root)
+
+  if vim.v.shell_error == 0 and git_root ~= '' then
+    -- 터미널 쉘에 직접 cd 명령 전송
+    vim.defer_fn(function()
+      if term and term.job_id then
+        local cd_cmd = 'cd "' .. git_root .. '"\n'
+        vim.fn.chansend(term.job_id, cd_cmd)
+      end
+    end, 50)
+  end
+end
 lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
+-- 폴더 그룹화 비활성화 (각 폴더를 개별적으로 표시)
+lvim.builtin.nvimtree.setup.renderer.group_empty = false
+-- 파일 선택 시 루트 디렉토리 자동 변경 방지
+lvim.builtin.nvimtree.setup.update_focused_file = {
+  enable = true,
+  update_root = false,  -- 루트 변경 비활성화
+}
+-- 루트 디렉토리 변경 완전 차단
+lvim.builtin.nvimtree.setup.sync_root_with_cwd = false  -- cwd 동기화 비활성화
+lvim.builtin.nvimtree.setup.respect_buf_cwd = false     -- 버퍼의 cwd 무시
+lvim.builtin.nvimtree.setup.actions = {
+  change_dir = {
+    enable = false,  -- 디렉토리 변경 액션 비활성화
+  },
+}
+-- Git 통합 완전 비활성화 (nil 에러 방지)
+lvim.builtin.nvimtree.setup.git = {
+  enable = false,
+  ignore = true,
+}
 -- Automatically install missing parsers when entering buffer
 lvim.builtin.treesitter.auto_install = true
 lvim.builtin.gitsigns.opts.current_line_blame = true
@@ -146,27 +238,33 @@ end
 
 lvim.lsp.null_ls.setup.debug = true
 -- linters and formatters <https://www.lunarvim.org/docs/languages#lintingformatting>
-local formatters = require "lvim.lsp.null-ls.formatters"
-formatters.setup {
-  {
-    command = "prettier",
-    -- extra_args = { "--print-width", "100" },
-    filetypes = { "typescript", "typescriptreact" },
-  },
-  {
-    command = "ktlint",
-    args = {
-      "--format",
-      "--stdin",
-      "**/*.kt",
-      "**/*.kts",
-    },
-    filetypes = { "kotlin" }
-  }
-}
+-- local formatters = require "lvim.lsp.null-ls.formatters"
+-- formatters.setup {
+--   -- Prettier 비활성화 (ESLint linter만 사용)
+--   -- {
+--   --   command = "prettier",
+--   --   extra_args = { "--config-precedence", "prefer-file" },
+--   --   filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
+--   -- },
+--   {
+--     command = "ktlint",
+--     args = {
+--       "--format",
+--       "--stdin",
+--       "**/*.kt",
+--       "**/*.kts",
+--     },
+--     filetypes = { "kotlin" }
+--   }
+-- }
 
 local linters = require "lvim.lsp.null-ls.linters"
-linters.setup {}
+linters.setup {
+  {
+    command = "eslint",
+    filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
+  }
+}
 
 -- lvim.builtin.lualine.on_config_done = function(lualine)
 --   local config = lualine.get_config()
@@ -180,9 +278,9 @@ linters.setup {}
 
 -- -- Additional Plugins <https://www.lunarvim.org/docs/plugins#user-plugins>
 lvim.plugins = {
-  {
-    "github/copilot.vim",
-  },
+  -- {
+  --   "github/copilot.vim",
+  -- },
   -- {
   --   "Pocco81/auto-save.nvim",
   --   config = function()
@@ -192,6 +290,10 @@ lvim.plugins = {
   --
   {
     "tpope/vim-surround",
+  },
+  {
+    "mfussenegger/nvim-jdtls",
+    ft = "java",
   },
   -- {
   --   "ray-x/lsp_signature.nvim",
@@ -384,3 +486,21 @@ lvim.plugins = {
 
 
 }
+
+-- Java LSP configuration
+vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "jdtls" })
+
+-- Auto-start JDTLS for Java files
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "java",
+  callback = function()
+    local fname = vim.api.nvim_buf_get_name(0)
+    if fname ~= "" and vim.fn.filereadable(fname) == 1 then
+      -- ftplugin should be loaded automatically, but if not, reload it
+      vim.cmd("source ~/.config/lvim/ftplugin/java.lua")
+    end
+  end,
+})
+
+-- DAP (Debug Adapter Protocol) for Java
+lvim.builtin.dap.active = true
