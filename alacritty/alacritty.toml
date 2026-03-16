@@ -498,7 +498,7 @@ history = 100000
 multiplier = 10
 
 [terminal.shell]
-args = ["--login", "-c", "tmux -f ~/.config/.tmux.conf attach -t ' ╣[-_-]╠  ' || tmux -f ~/.config/.tmux.conf new -s ' ╣[-_-]╠  '"]
+args = ["--login", "-c", "tmux -f ~/.config/.tmux.conf attach -t 'howard' || tmux -f ~/.config/.tmux.conf new -s 'howard'"]
 program = "/bin/zsh"
 
 [window.padding]
